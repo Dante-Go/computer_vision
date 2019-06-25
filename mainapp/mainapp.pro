@@ -26,10 +26,12 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+        qenhancedgraphicsview.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+        qenhancedgraphicsview.h
 
 FORMS += \
         mainwindow.ui
@@ -38,3 +40,19 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+INCLUDEPATH += ../cvplugininterface
+
+win32: {
+    include("D:/OpenCV3_4_6/opencv/build/opencv.pri")
+}
+
+unix: macx {
+    INCLUDEPATH += /usr/local/include
+    LIBS += -L"usr/local/lib" -lopen_world
+}
+
+unix: !macx {
+    CONFIG += link_pkgconfig
+    PKGCONFIG += opencv
+}
