@@ -65,7 +65,7 @@ void MainWindow::onPluginActionTriggered(bool)
       delete currentPluginGui;
     }
   currentPluginFile = QObject::sender()->property(FILE_ON_DISK_DYNAMIC_PROPERTY).toString();
-  currentPlugin = new QPluginLoader(currentThemeFile, this);
+  currentPlugin = new QPluginLoader(currentPluginFile, this);
   currentPluginGui = new QWidget(this);
   ui->pluginLayout->addWidget(currentPluginGui);
   CvPluginInterface *currentPluginInstance = dynamic_cast<CvPluginInterface*>(currentPlugin->instance());
@@ -136,7 +136,8 @@ void MainWindow::on_action_Open_Image_triggered()
                                                   tr("(*.jpg *.png *.bmp)"));
 
   using namespace cv;
-  originalMat = imread(fileName.toStdString());
+//  originalMat = imread(fileName.toStdString());
+  originalMat = imread(fileName.toLocal8Bit().toStdString()); // 支持中文路径
   if(!originalMat.empty())
     {
       onCurrentPluginUpdateNeeded();
@@ -159,7 +160,8 @@ void MainWindow::on_action_Save_Image_triggered()
                                                       "*.jpg;;*.png;;*.bmp");
       if(!fileName.isEmpty())
         {
-          cv::imwrite(fileName.toStdString(), processedMat);
+//          cv::imwrite(fileName.toStdString(), processedMat);
+          cv::imwrite(fileName.toLocal8Bit().toStdString(), processedMat);
         }
     }
   else if (ui->viewOriginalCheck->isChecked() && !originalMat.empty()) {
@@ -169,7 +171,8 @@ void MainWindow::on_action_Save_Image_triggered()
                                                       "*.jpg;;*.png;;*.bmp");
       if(!fileName.isEmpty())
         {
-          cv::imwrite(fileName.toStdString(), originalMat);
+//          cv::imwrite(fileName.toStdString(), originalMat);
+          cv::imwrite(fileName.toLocal8Bit().toStdString(), originalMat);
         }
     }
   else {
