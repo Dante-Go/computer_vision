@@ -8,4 +8,6 @@ SUBDIRS += mainapp  \
     color_plugin    \
     segmentation_plugin \
     fourier_plugin  \
-    keypoint_plugin
+    keypoint_plugin \
+    histogram_plugin
+
